@@ -1,0 +1,9 @@
+apiVersion: v2
+name: dtk-demo-issuer-be
+description: "A Helm chart for deploying the DTK Issuer Demo backend"
+
+type: application
+
+version: 0.1.0
+
+appVersion: latest

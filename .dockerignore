@@ -1,0 +1,19 @@
+# Patterns are anchored to the context root, so the **/ prefix is what makes these
+# match inside apps/*/be too.
+
+**/node_modules
+**/dist
+**/*.tsbuildinfo
+
+# Never bake secrets into the image — the runtime gets its config from the environment.
+# .env.example is deliberately kept: it documents the required variables.
+**/.env
+**/.env.local
+**/.env.*.local
+**/.npmrc
+
+.git
+.github
+docs
+**/*.log
+**/.DS_Store

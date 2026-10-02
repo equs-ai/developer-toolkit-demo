@@ -1,0 +1,481 @@
+:root {
+  color-scheme: light;
+
+  /* colour */
+  --background-neutral-surface-0: #ffffff;
+  --background-neutral-surface-1: #fafafa;
+  --background-neutral-tonal-default: #f5f5f5;
+  --background-brand-default: #4229aa;
+  --background-brand-tonal-default: #dee1ff;
+  --background-information-tonal-default: #dbeafe;
+  --background-positive-default: #15803d;
+  --background-positive-tonal-default: #dcfce7;
+  --background-negative-tonal-default: #fee2e2;
+  --text-neutral-default: #0a0a0a;
+  --text-neutral-secondary: #525252;
+  --text-brand-on-default: #edefff;
+  --text-brand-on-tonal: #392986;
+  --text-information-on-tonal: #1d4ed8;
+  --text-positive-on-tonal: #15803d;
+  --text-negative-on-tonal: #b91c1c;
+  --border-neutral-default: #737373;
+  --border-neutral-tertiary: #d4d4d4;
+  --border-brand-default: #4229aa;
+  --border-information-default: #1d4ed8;
+  --border-positive-default: #15803d;
+  --border-negative-default: #b91c1c;
+  --border-utilities-white: #ffffff;
+  --border-default: 1px;
+  --border-focus-ring: 2px;
+
+  /* radius */
+  --radius-extra-small-2: 8px;
+  --radius-small: 12px;
+  --radius-small-2: 16px;
+  --radius-medium: 24px;
+  --radius-round: 9999px;
+
+  /* type */
+  --body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --body-size-small: 14px;
+  --body-size-medium: 16px;
+  --body-weight-regular: 400;
+  --body-weight-strong: 600;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--body-font-family);
+  color: var(--text-neutral-default);
+  background: var(--background-neutral-surface-1);
+}
+
+.icon {
+  display: block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: var(--background-neutral-surface-1);
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.body-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--background-neutral-surface-0);
+  border-radius: var(--radius-medium);
+  overflow: hidden;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 32px;
+  width: 220px;
+  padding: 24px;
+}
+
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar__logo-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+}
+
+.sidebar__brand {
+  margin: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-strong);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+  white-space: nowrap;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sidebar__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: var(--radius-extra-small-2);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--body-size-small);
+  font-weight: var(--body-weight-regular);
+  line-height: 16px;
+  color: var(--text-neutral-default);
+  text-align: left;
+}
+
+.sidebar__nav-item--active {
+  background: var(--background-brand-default);
+  color: var(--text-brand-on-default);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: var(--border-default) solid var(--border-neutral-tertiary);
+}
+
+.header__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 360px;
+  min-height: 48px;
+  padding: 4px 12px;
+  border: var(--border-default) solid var(--border-neutral-default);
+  border-radius: var(--radius-small);
+}
+
+.header__search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  padding: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-regular);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.header__search-input::placeholder {
+  color: var(--text-neutral-secondary);
+  opacity: 1;
+}
+
+.header__search-input:focus {
+  outline: none;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-small);
+  background: var(--background-brand-tonal-default);
+}
+
+.header__avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-round);
+  background: var(--background-brand-tonal-default);
+}
+
+.header__avatar-badge {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 8px;
+  height: 8px;
+  border: var(--border-default) solid var(--border-utilities-white);
+  border-radius: var(--radius-round);
+  background: var(--background-positive-default);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border: var(--border-default) solid var(--border-information-default);
+  border-radius: var(--radius-small-2);
+  background: var(--background-information-tonal-default);
+  color: var(--text-information-on-tonal);
+}
+
+.banner--success {
+  border-color: var(--border-positive-default);
+  background: var(--background-positive-tonal-default);
+  color: var(--text-positive-on-tonal);
+}
+
+.banner--error {
+  border-color: var(--border-negative-default);
+  background: var(--background-negative-tonal-default);
+  color: var(--text-negative-on-tonal);
+}
+
+.banner__text {
+  margin: 0;
+  font-size: var(--body-size-small);
+  font-weight: var(--body-weight-regular);
+  line-height: 16px;
+  color: inherit;
+}
+
+.banner__text strong {
+  font-weight: 700;
+}
+
+.banner__action {
+  flex-shrink: 0;
+  margin: 0 0 0 auto;
+  padding: 4px 12px;
+  border: var(--border-default) solid currentcolor;
+  border-radius: var(--radius-round);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--body-size-small);
+  font-weight: var(--body-weight-strong);
+  line-height: 16px;
+  color: inherit;
+  cursor: pointer;
+}
+
+.banner__action:focus-visible {
+  outline: var(--border-focus-ring) solid currentcolor;
+  outline-offset: 2px;
+}
+
+.content__title {
+  margin: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-strong);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.cards {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+  border-radius: var(--radius-small-2);
+  font-family: inherit;
+  text-align: left;
+}
+
+.card--upload {
+  border: var(--border-default) solid var(--border-neutral-tertiary);
+  background: var(--background-neutral-tonal-default);
+}
+
+.card--present {
+  border: var(--border-focus-ring) solid var(--border-brand-default);
+  background: var(--background-brand-tonal-default);
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.card--present:hover:not(:disabled) {
+  background: #d0d5ff;
+}
+
+.card--present:active:not(:disabled) {
+  background: #c2c9ff;
+}
+
+.card--present:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+}
+
+.card--present:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-round);
+  background: var(--background-neutral-surface-0);
+}
+
+.card__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.card__title {
+  margin: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-strong);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.card--present .card__title {
+  color: var(--text-brand-on-tonal);
+}
+
+.card__description {
+  margin: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-regular);
+  line-height: 24px;
+  color: var(--text-neutral-secondary);
+}
+
+/* These rules are required: presentVCs() creates these elements but ships no CSS for them, so
+   without this the Embed UI iframe renders as a plain block at the end of <body> instead of a
+   centered overlay. */
+
+/* Wrapper around the Embed UI content; sized to fit whatever the library puts inside it. */
+.embedded-wallet-ui {
+  width: fit-content;
+  height: fit-content;
+  z-index: 100;
+}
+
+/* Full-screen backdrop the wrapper switches to while the Embed UI wants the page behind it inert. */
+.embedded-wallet-ui-blocked {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  z-index: 100;
+}
+
+/* The modal iframe itself: centered on screen and sized independently of its wrapper. */
+.embedded-wallet-ui-iframe {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  height: 80%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  border-radius: var(--radius-medium);
+  background-color: var(--background-neutral-surface-0);
+  box-shadow:
+    0 0 48px 0 rgba(0, 0, 0, 0.07),
+    0 16px 32px 0 rgba(0, 0, 0, 0.07),
+    0 12px 24px 0 rgba(0, 0, 0, 0.07);
+}
+
+/* Small screens: the sidebar collapses to a logo bar and the cards stack. */
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+    padding: 16px;
+  }
+
+  .sidebar__nav {
+    display: none;
+  }
+
+  .header {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .header__search {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+
+  .content {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .banner {
+    flex-wrap: wrap;
+  }
+
+  .banner__text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cards {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+}

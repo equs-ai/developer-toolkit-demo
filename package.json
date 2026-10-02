@@ -1,0 +1,35 @@
+{
+  "name": "dtk-demo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Reference demos showing how to integrate the Developer Toolkit (DTK) as an issuer and as a verifier",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.22.0",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,mjs,css,html,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mjs,css,html,json,md}\"",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "build": "pnpm -r --if-present build",
+    "issuer:fe": "pnpm --filter @dtk-demo/issuer-fe dev",
+    "issuer:be": "pnpm --filter @dtk-demo/issuer-be dev",
+    "verifier:fe": "pnpm --filter @dtk-demo/verifier-fe dev",
+    "verifier:be": "pnpm --filter @dtk-demo/verifier-be dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "eslint": "9.39.4",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react-hooks": "5.0.0",
+    "eslint-plugin-react-refresh": "0.4.16",
+    "globals": "15.14.0",
+    "prettier": "3.4.2",
+    "typescript": "5.6.2",
+    "typescript-eslint": "8.18.2"
+  }
+}

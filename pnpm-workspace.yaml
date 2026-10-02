@@ -1,0 +1,6 @@
+packages:
+  - apps/*/fe
+  - apps/*/be
+
+onlyBuiltDependencies:
+  - esbuild

@@ -20,9 +20,9 @@ export function verifyKyc({ onVerified, onRejected, onError }: VerifyKycCallback
         .then(({ verifiedClaims }) => onVerified(verifiedClaims))
         .catch(onError)
     },
-    // Also available, unused here: onLoading (iframe loading state),
-    // dcApiEnabled/dcApiSignedRequestEnabled (Digital Credentials API),
-    // hidePresentationOverview (skips the initial overview step),
+    // Also available, unused here: onLoading (iframe loading state), 
+    // dcApiEnabled/dcApiSignedRequestEnabled (Digital Credentials API), 
+    // hidePresentationOverview (skips the initial overview step), 
     // vpPurposeText (custom consent text), and skipPreAuth (for web wallet).
   })
 }

@@ -38,10 +38,7 @@ export const backendApi = {
   createAutoOffer: () => request<CreateAutoOfferResponse>('/offers/auto', { method: 'POST' }),
 
   deliverTxCode: async ({ offerId, ...delivery }: DeliverTxCodeParams): Promise<DeliverTxCodeResponse> => {
-    return request<DeliverTxCodeResponse>(`/offers/${encodeURIComponent(offerId)}/delivery`, {
-      method: 'POST',
-      body: JSON.stringify(delivery),
-    })
+    return request<DeliverTxCodeResponse>(`/offers/${encodeURIComponent(offerId)}/delivery`, { method: 'POST', body: JSON.stringify(delivery) })
   },
 
   getOffer: (offerId: string) => request<OfferStatus>(`/offers/${encodeURIComponent(offerId)}`),

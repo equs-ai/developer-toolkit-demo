@@ -5,7 +5,7 @@ import { VerifyPanel } from './ui/VerifyPanel'
 
 export function App() {
   console.info(`Demo App version: ${APP_VERSION}`)
-
+  
   useEmbeddedUi()
 
   return (

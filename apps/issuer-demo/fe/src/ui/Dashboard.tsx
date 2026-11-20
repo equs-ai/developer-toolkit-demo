@@ -7,17 +7,18 @@ import infoIcon from './assets/icons/info.svg'
 
 type DashboardProps = {
   onIssueToAnyWallet: () => Promise<string>
-  onAutoIssue: () => Promise<string>
+  onAutoIssue?: () => Promise<string>
   onCheckStatus: (offerId: string) => Promise<IssuanceState>
+  signedIn: boolean
   userName?: string
   tenantSlug?: string
 }
 
-export function Dashboard({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, userName, tenantSlug }: DashboardProps) {
+export function Dashboard({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, signedIn, userName, tenantSlug }: DashboardProps) {
   return (
     <main className="dashboard">
       <div className="body-panel__header">
-        <h1 className="welcome">Welcome back, {userName ?? 'user'}</h1>
+        <h1 className="welcome">{signedIn ? `Welcome back, ${userName ?? 'user'}` : 'Welcome'}</h1>
         <div className="notice">
           <img className="icon" src={infoIcon} alt="" width={24} height={24} />
           <p className="notice__text">
@@ -32,6 +33,7 @@ export function Dashboard({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, user
           onIssueToAnyWallet={onIssueToAnyWallet}
           onAutoIssue={onAutoIssue}
           onCheckStatus={onCheckStatus}
+          signedIn={signedIn}
           tenantSlug={tenantSlug}
         />
       </div>

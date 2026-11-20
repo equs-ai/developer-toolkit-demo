@@ -4,14 +4,15 @@
 #
 #   docker build --target issuer-be   -t dtk-demo-issuer-be   .
 #   docker build --target verifier-be -t dtk-demo-verifier-be .
+#   docker build --target ap2-be      -t dtk-demo-ap2-be      .
 #
 # Config comes from the environment; see the app's .env.example.
-# Listens on PORT, default 3200 (issuer) / 3201 (verifier).
+# Listens on PORT, default 3200 (issuer) / 3201 (verifier) / 3202 (ap2).
 
-ARG NODE_IMAGE=node:22-alpine
+ARG NODE_IMAGE=node:24.22.1-alpine
 
 # ==================================================================================
-# BASE — the workspace as it comes out of git, plus the script both builders run
+# BASE — the workspace as it comes out of git, plus the script every builder runs
 # ==================================================================================
 
 FROM ${NODE_IMAGE} AS base
@@ -56,8 +57,14 @@ ARG APP_DIR=apps/verifier-demo/be
 
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store build-app "${APP_DIR}"
 
+FROM base AS ap2-build
+
+ARG APP_DIR=apps/ap2-demo/be
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store build-app "${APP_DIR}"
+
 # ==================================================================================
-# RUNTIMES — the two build targets
+# RUNTIMES — the build targets
 # ==================================================================================
 
 FROM ${NODE_IMAGE} AS issuer-be
@@ -95,6 +102,25 @@ COPY --from=verifier-build --chown=node:node /app/${APP_DIR} ./${APP_DIR}
 WORKDIR /app/${APP_DIR}
 
 EXPOSE 3201
+
+USER node
+
+CMD ["node", "dist/server.js"]
+
+FROM ${NODE_IMAGE} AS ap2-be
+
+ARG APP_DIR=apps/ap2-demo/be
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=ap2-build --chown=node:node /app/node_modules ./node_modules
+COPY --from=ap2-build --chown=node:node /app/${APP_DIR} ./${APP_DIR}
+
+WORKDIR /app/${APP_DIR}
+
+EXPOSE 3202
 
 USER node
 

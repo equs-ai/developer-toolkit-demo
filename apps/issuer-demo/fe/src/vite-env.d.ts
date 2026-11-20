@@ -5,7 +5,8 @@ interface ImportMetaEnv {
   readonly VITE_TENANT_SLUG: string
   readonly VITE_KC_AUTHORITY: string
   readonly VITE_KC_CLIENT_ID: string
-  readonly VITE_EMBED_UI_SSI_ORIGIN: string
+  readonly VITE_EMBED_UI_REGION?: 'us' | 'eu'
+  readonly VITE_EMBED_UI_SSI_ORIGIN?: string
 }
 
 interface ImportMeta {

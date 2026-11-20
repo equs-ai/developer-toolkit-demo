@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
-import packageJson from './package.json'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig(() => {
   return {
     define: {
-      APP_VERSION: JSON.stringify(packageJson.version),
+      APP_VERSION: JSON.stringify(process.env.CI_COMMIT_TAG || process.env.CI_COMMIT_SHORT_SHA || '0.0.0'),
     },
     plugins: [react()],
     server: {

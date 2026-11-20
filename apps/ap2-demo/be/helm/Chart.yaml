@@ -1,0 +1,9 @@
+apiVersion: v2
+name: dtk-demo-ap2-be
+description: "A Helm chart for deploying the DTK AP2 Demo backend"
+
+type: application
+
+version: 0.1.0
+
+appVersion: latest

@@ -71,7 +71,6 @@ body {
   height: 24px;
 }
 
-
 .app {
   position: relative;
   display: flex;
@@ -86,7 +85,6 @@ body {
   flex-direction: column;
   min-width: 0;
 }
-
 
 .backlight {
   position: absolute;
@@ -135,7 +133,6 @@ body {
   width: auto;
   height: auto;
 }
-
 
 .sidebar {
   position: relative;
@@ -196,7 +193,6 @@ body {
   color: var(--text-brand-on-default);
 }
 
-
 .top-bar {
   position: relative;
   z-index: 2;
@@ -207,7 +203,6 @@ body {
   min-height: 72px;
   padding: 12px 24px;
 }
-
 
 .button {
   display: inline-flex;
@@ -285,7 +280,6 @@ body {
   background: var(--background-neutral-surface-2);
 }
 
-
 .account {
   position: relative;
   flex-shrink: 0;
@@ -361,7 +355,6 @@ body {
   overflow-wrap: anywhere;
 }
 
-
 .splash {
   display: flex;
   align-items: center;
@@ -401,7 +394,6 @@ body {
   color: var(--text-neutral-tertiary);
   overflow-wrap: anywhere;
 }
-
 
 .body-panel {
   position: relative;
@@ -444,7 +436,6 @@ body {
   white-space: nowrap;
 }
 
-
 .notice {
   display: flex;
   align-items: center;
@@ -472,7 +463,6 @@ body {
   font-weight: var(--body-weight-strong);
 }
 
-
 .section {
   padding: 24px 24px 0;
 }
@@ -497,7 +487,6 @@ body {
   line-height: 32px;
   color: var(--text-neutral-default);
 }
-
 
 .cards {
   display: flex;
@@ -642,7 +631,6 @@ body {
   gap: 8px;
 }
 
-
 .kyc-panel {
   flex-shrink: 0;
   max-width: 400px;
@@ -706,6 +694,13 @@ body {
 .kyc-action__info:hover .kyc-action__tooltip,
 .kyc-action__info-trigger:focus-visible + .kyc-action__tooltip {
   visibility: visible;
+  opacity: 1;
+}
+
+.kyc-action--unavailable .button {
+  background: var(--background-neutral-tonal-default);
+  color: var(--text-neutral-tertiary);
+  cursor: not-allowed;
   opacity: 1;
 }
 
@@ -799,7 +794,6 @@ body {
   border-radius: var(--radius-extra-small-2);
 }
 
-
 .spending {
   display: flex;
   flex-direction: column;
@@ -867,7 +861,6 @@ body {
   font-weight: var(--body-weight-regular);
   color: var(--text-neutral-secondary);
 }
-
 
 .transactions__header {
   display: flex;
@@ -961,7 +954,6 @@ body {
   outline-offset: 2px;
 }
 
-
 /* These rules are required: issueVC() creates these elements but ships no CSS for them, so without
    this the Embed UI iframe renders as a plain block at the end of <body> instead of a centered
    overlay. */
@@ -998,7 +990,6 @@ body {
     0 0 48px 0 rgba(0, 0, 0, 0.4),
     0 16px 32px 0 rgba(0, 0, 0, 0.32);
 }
-
 
 /* Small screens: the cards stack first, then the sidebar collapses to a logo bar. */
 

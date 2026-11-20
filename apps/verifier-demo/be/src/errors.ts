@@ -24,7 +24,15 @@ export class DtkError extends Error {
   }
 }
 
+function upstreamErrorCode(body: unknown): unknown {
+  return body !== null && typeof body === 'object' && 'error' in body ? body.error : undefined
+}
+
 export function fromDtkFailure(err: DtkError): AppError {
+  if (err.status === 403 && upstreamErrorCode(err.body) === 'tenant_access_expired') {
+    return new AppError('tenant_access_expired', "This tenant's access to DTK has expired", 503)
+  }
+
   if (err.status === 401 || err.status === 403) {
     return new AppError('dtk_auth_failed', 'This service is not correctly configured to call DTK', 500)
   }

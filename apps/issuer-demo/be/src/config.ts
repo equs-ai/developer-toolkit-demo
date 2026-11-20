@@ -22,6 +22,9 @@ const schema = z.object({
   EXT_KC_JWKS_URL: z.string().url(),
   EXT_KC_ISSUER: z.string().url(),
   EXT_KC_AUDIENCE: z.string().min(1),
+
+  ATTRIBUTE_PROVIDER_AUDIENCE: z.string().min(1).default('demo-issuer-attribute-provider'),
+  ATTRIBUTE_PROVIDER_CLIENT_ID: z.string().min(1).default('public-demo-issuer-attribute-provider'),
 })
 
 const parsed = schema.safeParse(process.env)
@@ -48,5 +51,9 @@ export const config = {
     jwksUrl: env.EXT_KC_JWKS_URL,
     issuer: env.EXT_KC_ISSUER,
     audience: env.EXT_KC_AUDIENCE,
+  },
+  attributeProvider: {
+    audience: env.ATTRIBUTE_PROVIDER_AUDIENCE,
+    clientId: env.ATTRIBUTE_PROVIDER_CLIENT_ID,
   },
 } as const

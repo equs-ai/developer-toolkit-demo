@@ -1,23 +1,27 @@
 import { config } from '../config.js'
 import { AppError } from '../errors.js'
 import { dtkFetch } from '../client/httpClient.js'
+import { FLOW_SCHEMA_NAMES, type Flow } from './flows.js'
 import type { Paginated, VpSchemaListItem } from './types.js'
 
-const KYC_VP_SCHEMA_NAME = 'KYC VP'
+export async function resolveFlow(flow: Flow): Promise<{ vpSchemaId: string; verifierId: string }> {
+  const name = FLOW_SCHEMA_NAMES[flow]
 
-export async function resolveKycVpSchema(): Promise<{ vpSchemaId: string; verifierId: string }> {
-  const page = await dtkFetch<Paginated<VpSchemaListItem>>(config.controlApiUrl, '/vp-schemas')
+  const page = await dtkFetch<Paginated<VpSchemaListItem>>(
+    config.controlApiUrl,
+    `/vp-schemas?name=${encodeURIComponent(name)}`,
+  )
 
-  const schema = page.items.find((item) => item.name === KYC_VP_SCHEMA_NAME)
+  const schema = page.items.find((item) => item.name === name)
 
   if (!schema) {
-    throw new AppError('vp_schema_not_found', `No VP Schema named "${KYC_VP_SCHEMA_NAME}" in this tenant — see docs/schemas.md`, 500)
+    throw new AppError('vp_schema_not_found', `No VP Schema named "${name}" in this tenant — see docs/schemas.md`, 500)
   }
 
-  const verifierId = schema.verifiers[0]
+  const verifierId = schema.verifiers[0]?.id
 
   if (!verifierId) {
-    throw new AppError('no_verifier_attached', `VP Schema "${KYC_VP_SCHEMA_NAME}" has no Verifier attached to it`, 500)
+    throw new AppError('no_verifier_attached', `VP Schema "${name}" has no Verifier attached to it`, 500)
   }
 
   return { vpSchemaId: schema.id, verifierId }

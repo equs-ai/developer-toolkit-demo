@@ -4,9 +4,11 @@ import { config } from './config'
 import type { CreateAutoOfferResponse, CreateOfferResponse, OfferStatus } from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-    Authorization: `Bearer ${getAccessToken() ?? ''}`,
+  const headers: Record<string, string> = { Accept: 'application/json' }
+
+  const token = getAccessToken()
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
   }
 
   if (init?.body) {
@@ -35,10 +37,15 @@ async function describeFailure(response: Response): Promise<string> {
 export const backendApi = {
   createOffer: () => request<CreateOfferResponse>('/offers', { method: 'POST' }),
 
+  createAuthCodeOffer: () => request<CreateOfferResponse>('/offers/auth-code', { method: 'POST' }),
+
   createAutoOffer: () => request<CreateAutoOfferResponse>('/offers/auto', { method: 'POST' }),
 
   deliverTxCode: async ({ offerId, ...delivery }: DeliverTxCodeParams): Promise<DeliverTxCodeResponse> => {
-    return request<DeliverTxCodeResponse>(`/offers/${encodeURIComponent(offerId)}/delivery`, { method: 'POST', body: JSON.stringify(delivery) })
+    return request<DeliverTxCodeResponse>(`/offers/${encodeURIComponent(offerId)}/delivery`, {
+      method: 'POST',
+      body: JSON.stringify(delivery),
+    })
   },
 
   getOffer: (offerId: string) => request<OfferStatus>(`/offers/${encodeURIComponent(offerId)}`),

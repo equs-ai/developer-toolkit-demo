@@ -29,10 +29,17 @@ handlers in `routes/` translate between this demo's HTTP surface and the functio
 `client/` is the low-level transport: OAuth2 token handling and a generic authenticated fetch
 wrapper. `integration/` is the API calls themselves.
 
-| File                            | Calls                                                                          |
-| ------------------------------- | ------------------------------------------------------------------------------ |
-| `client/token.ts`               | OAuth2 `client_credentials` token, cached until it expires                     |
-| `client/httpClient.ts`          | The authenticated fetch wrapper every call below goes through                  |
-| `integration/integrationApi.ts` | `POST /{verifierId}/oid4vp/requests/multi`, `POST /{verifierId}/oid4vp/verify` |
-| `integration/controlApi.ts`     | `GET /vp-schemas` — resolves the VP Schema and Verifier by schema name         |
-| `integration/types.ts`          | Request and response shapes for the calls above                                |
+| File                             | Calls                                                                          |
+| -------------------------------- | ------------------------------------------------------------------------------ |
+| `client/token.ts`                | OAuth2 `client_credentials` token, cached until it expires                     |
+| `client/httpClient.ts`           | The authenticated fetch wrapper every call below goes through                  |
+| `integration/integrationApi.ts`  | `POST /{verifierId}/oid4vp/requests/multi`, `POST /{verifierId}/oid4vp/verify` |
+| `integration/controlApi.ts`      | `GET /vp-schemas` — resolves the VP Schema and Verifier by schema name         |
+| `integration/flows.ts`           | The two flows, and the VP Schema name each one resolves through               |
+| `integration/types.ts`           | Request and response shapes for the calls above                               |
+
+A **flow** is the only thing either route takes from the browser: `kyc` or `pid`,
+defaulting to `kyc`. It selects a VP Schema by name, and the Verifier comes off that schema — so the
+EUDI flow reaches the x509 Verifier without the browser, or this backend, naming it. See
+[`docs/verifier-flow.md`](../../../docs/verifier-flow.md) and
+[`docs/eudi-wallet.md`](../../../docs/eudi-wallet.md).

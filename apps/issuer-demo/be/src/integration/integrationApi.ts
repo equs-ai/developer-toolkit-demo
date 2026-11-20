@@ -38,6 +38,19 @@ export async function createAutoIssuanceOffer(input: OfferInput & { email: strin
   })
 }
 
+export async function createAuthCodeOffer(input: Pick<OfferInput, 'vcSchemaVersionId' | 'issuerId'>): Promise<CreateOfferResponse> {
+  const body: CreateOfferRequest = {
+    vcSchemaVersionId: input.vcSchemaVersionId,
+    issuerId: input.issuerId,
+    flow: 'authorization_code',
+  }
+
+  return dtkFetch<CreateOfferResponse>(config.integrationApiUrl, '/oid4vci/offers', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}
+
 export async function setTxCodeDelivery(uriId: string, delivery: Delivery): Promise<DeliverTxCodeResponse> {
   return dtkFetch<DeliverTxCodeResponse>(config.integrationApiUrl, `/oid4vci/offers/${uriId}/delivery`, {
     method: 'POST',

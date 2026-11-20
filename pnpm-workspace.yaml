@@ -4,3 +4,6 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
+
+overrides:
+  proxy-addr: '2.0.8'

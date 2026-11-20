@@ -1,12 +1,18 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { resolveKycVpSchema } from '../integration/controlApi.js'
+import { resolveFlow } from '../integration/controlApi.js'
+import { FLOWS } from '../integration/flows.js'
 import { createPresentationRequest, verifyPresentation } from '../integration/integrationApi.js'
 
 export const requestsRouter = Router()
 
-requestsRouter.post('/requests', async (_req, res) => {
-  const schema = await resolveKycVpSchema()
+const flow = z.enum(FLOWS).default('kyc')
+
+const requestBody = z.object({ flow })
+
+requestsRouter.post('/requests', async (req, res) => {
+  const body = requestBody.parse(req.body ?? {})
+  const schema = await resolveFlow(body.flow)
 
   const requests = await createPresentationRequest(schema)
 
@@ -22,13 +28,16 @@ const verifyBody = z.object({
   }),
   txId: z.string().min(1),
   origin: z.string().url().optional(),
+  flow,
 })
 
 requestsRouter.post('/verify', async (req, res) => {
-  const body = verifyBody.parse(req.body)
-  const { verifierId } = await resolveKycVpSchema()
+  const { flow: requested, ...body } = verifyBody.parse(req.body)
+  const { verifierId } = await resolveFlow(requested)
 
-  const { verifiedClaims } = await verifyPresentation(verifierId, body)
+  // The disclosed claims are personal data: a real verifier acts on them here, server-side, and
+  // tells the browser only the outcome.
+  await verifyPresentation(verifierId, body)
 
-  res.json({ verifiedClaims })
+  res.json({ verified: true })
 })

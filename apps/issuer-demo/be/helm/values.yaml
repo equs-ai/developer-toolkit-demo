@@ -65,6 +65,8 @@ ingress:
   paths:
   - path: /offers
     pathType: Prefix
+  - path: /attribute-provider
+    pathType: Prefix
 
 ## Horizontal Pod Autoscaler
 

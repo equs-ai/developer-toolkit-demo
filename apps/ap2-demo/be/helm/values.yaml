@@ -1,0 +1,98 @@
+# Default values for the DTK AP2 Demo backend.
+
+## Deployment
+
+annotations:
+
+# Must stay 1: the stand-in shop keeps its checkouts and its signing key in the process's memory,
+# so a second pod would refuse the other pod's checkouts.
+replicaCount: 1
+
+image:
+  # Required. Set to your own registry, e.g. --set image.repository=... --set image.tag=...
+  repository:
+  pullPolicy:
+  tag:
+
+# Environment variables sourced from a Kubernetes Secret.
+# Shape: <ENV_VAR_NAME>: { k8s_secret_name: <name>, k8s_secret_key: <key> }
+secretEnv: {}
+
+podSecurityContext: {}
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: ["ALL"]
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+topologySpreadConstraints: []
+
+# The port the app listens on. Must match service.api.port.
+# Required, set per deployment (e.g. --set env.CORS_ORIGIN=...): CORS_ORIGIN, AP2_MCP_URL, SHOP_PUBLIC_URL,
+# TRUSTED_ISSUERS. See ../.env.example. This backend holds no secrets.
+env:
+  PORT: "3202"
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 96Mi
+  limits:
+    memory: 256Mi
+
+## Service Account
+
+serviceAccount:
+  create: false
+  # The app never calls the Kubernetes API.
+  automount: false
+
+## Service
+
+service:
+  type: ClusterIP
+  api:
+    port: 3202
+    targetPort: 3202
+    portName: api
+
+## Ingress
+
+ingress:
+  enabled: false
+  host: ""
+  paths:
+  - path: /merchant
+    pathType: Prefix
+  - path: /payments
+    pathType: Prefix
+
+## Horizontal Pod Autoscaler
+
+# Must stay off, see replicaCount.
+autoscaling:
+  enabled: false
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 3202
+  initialDelaySeconds: 15
+  periodSeconds: 20
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 3202
+  initialDelaySeconds: 20
+  periodSeconds: 20
+
+podDisruptionBudget:
+  enabled: false
+  maxUnavailable: 1
+  # minAvailable: 1  # set one or the other, never both
+  unhealthyPodEvictionPolicy: AlwaysAllow

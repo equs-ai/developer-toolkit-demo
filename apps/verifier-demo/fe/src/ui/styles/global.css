@@ -15,6 +15,9 @@
   --text-neutral-secondary: #525252;
   --text-brand-on-default: #edefff;
   --text-brand-on-tonal: #392986;
+  --text-brand-default: #4229aa;
+  --text-neutral-on-tonal: #404040;
+  --text-utilities-white: #ffffff;
   --text-information-on-tonal: #1d4ed8;
   --text-positive-on-tonal: #15803d;
   --text-negative-on-tonal: #b91c1c;
@@ -25,10 +28,12 @@
   --border-positive-default: #15803d;
   --border-negative-default: #b91c1c;
   --border-utilities-white: #ffffff;
+  --background-utilities-black: #000000;
   --border-default: 1px;
   --border-focus-ring: 2px;
 
   /* radius */
+  --radius-extra-small: 4px;
   --radius-extra-small-2: 8px;
   --radius-small: 12px;
   --radius-small-2: 16px;
@@ -37,10 +42,13 @@
 
   /* type */
   --body-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --body-size-x-small: 12px;
   --body-size-small: 14px;
   --body-size-medium: 16px;
   --body-weight-regular: 400;
   --body-weight-strong: 600;
+
+  --heading-size-base: 24px;
 }
 
 *,
@@ -63,7 +71,6 @@ body {
   height: 24px;
 }
 
-
 .app {
   display: flex;
   min-height: 100vh;
@@ -85,7 +92,6 @@ body {
   border-radius: var(--radius-medium);
   overflow: hidden;
 }
-
 
 .sidebar {
   display: flex;
@@ -146,7 +152,6 @@ body {
   background: var(--background-brand-default);
   color: var(--text-brand-on-default);
 }
-
 
 .header {
   display: flex;
@@ -231,7 +236,6 @@ body {
   background: var(--background-positive-default);
 }
 
-
 .content {
   display: flex;
   flex: 1;
@@ -303,7 +307,6 @@ body {
   color: var(--text-neutral-default);
 }
 
-
 .cards {
   display: flex;
   align-items: stretch;
@@ -355,6 +358,31 @@ body {
   opacity: 0.6;
 }
 
+.card--eudi {
+  border: var(--border-default) solid var(--border-neutral-tertiary);
+  background: var(--background-neutral-tonal-default);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.card--eudi:hover:not(:disabled) {
+  background: #e5e5e5;
+}
+
+.card--eudi:active:not(:disabled) {
+  background: #d4d4d4;
+}
+
+.card--eudi:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+}
+
+.card--eudi:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
 .card__icon {
   display: flex;
   align-items: center;
@@ -394,6 +422,377 @@ body {
   color: var(--text-neutral-secondary);
 }
 
+.picker {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 200;
+}
+
+.picker__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  min-width: 360px;
+  max-width: 960px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 32px;
+  border-radius: var(--radius-medium);
+  background: var(--background-neutral-surface-0);
+  box-shadow:
+    0 0 8px rgba(0, 0, 0, 0.07),
+    0 2px 4px rgba(0, 0, 0, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.07);
+}
+
+.picker__panel:focus {
+  outline: none;
+}
+
+.picker__close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  border: none;
+  border-radius: var(--radius-small);
+  background: transparent;
+  cursor: pointer;
+}
+
+.picker__close:hover {
+  background: var(--background-neutral-tonal-default);
+}
+
+.picker__close:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+}
+
+.picker__header {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-right: 48px;
+}
+
+.picker__title {
+  margin: 0;
+  font-size: var(--heading-size-base);
+  font-weight: var(--body-weight-strong);
+  line-height: 32px;
+  letter-spacing: -0.48px;
+  color: var(--text-neutral-default);
+}
+
+.picker__subtitle {
+  margin: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-regular);
+  line-height: 24px;
+  color: var(--text-neutral-secondary);
+}
+
+.picker__options {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+}
+
+.option {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 16px;
+  border: var(--border-default) solid transparent;
+  border-radius: var(--radius-small);
+  background: var(--background-neutral-tonal-default);
+  cursor: pointer;
+}
+
+.option--selected {
+  border-color: var(--border-brand-default);
+  background: var(--background-brand-tonal-default);
+}
+
+.option__radio {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.option__radio::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  border: var(--border-default) solid var(--border-neutral-default);
+  border-radius: var(--radius-round);
+}
+
+.option__radio:checked::before {
+  border-color: var(--background-brand-default);
+  background: var(--background-brand-default);
+}
+
+.option__radio:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  transform: translate(-50%, -50%);
+  border-radius: var(--radius-round);
+  background: var(--text-brand-on-default);
+}
+
+.option__radio:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+  border-radius: var(--radius-round);
+}
+
+.option__label {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-regular);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.option--selected .option__label {
+  color: var(--text-brand-default);
+}
+
+.option__info {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.option__info:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+  border-radius: var(--radius-extra-small);
+}
+
+.option__tooltip {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 1;
+  display: none;
+  min-height: 24px;
+  padding: 4px 8px;
+  border-radius: var(--radius-extra-small);
+  background: var(--background-utilities-black);
+  font-size: var(--body-size-x-small);
+  font-weight: var(--body-weight-regular);
+  line-height: 14px;
+  color: var(--text-utilities-white);
+  white-space: nowrap;
+}
+
+.option__info:hover .option__tooltip,
+.option__info:focus-visible .option__tooltip {
+  display: block;
+}
+
+.howto {
+  border: var(--border-default) solid var(--border-neutral-tertiary);
+  border-radius: var(--radius-small);
+  overflow: hidden;
+}
+
+.howto__title {
+  margin: 0;
+  padding: 16px;
+  background: var(--background-neutral-tonal-default);
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-strong);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.howto__body {
+  padding: 16px;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-regular);
+  line-height: 24px;
+  color: var(--text-neutral-default);
+}
+
+.howto__list {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.howto__list li + li {
+  margin-top: 8px;
+}
+
+.howto__links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.howto__link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-information-on-tonal);
+}
+
+.howto__link--inline {
+  display: inline;
+  font-weight: var(--body-weight-strong);
+}
+
+.howto__link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.howto__link-icon img {
+  display: block;
+}
+
+.howto__link:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+}
+
+.picker__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  min-height: 48px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius-small);
+  font-family: inherit;
+  font-size: var(--body-size-medium);
+  font-weight: var(--body-weight-strong);
+  line-height: 24px;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.btn:focus-visible {
+  outline: var(--border-focus-ring) solid var(--border-brand-default);
+  outline-offset: 2px;
+}
+
+.btn--neutral {
+  background: var(--background-neutral-tonal-default);
+  color: var(--text-neutral-on-tonal);
+}
+
+.btn--neutral:hover {
+  background: #e5e5e5;
+}
+
+.btn--neutral:active {
+  background: #d4d4d4;
+}
+
+.btn--primary {
+  background: var(--background-brand-default);
+  color: var(--text-brand-on-default);
+}
+
+.btn--primary:hover {
+  background: #392986;
+}
+
+.btn--primary:active {
+  background: #2f2270;
+}
+
+.btn--neutral:disabled {
+  background: var(--background-neutral-tonal-default);
+}
+
+.btn--primary:disabled {
+  background: var(--background-brand-default);
+}
+
+.btn:disabled,
+.picker__close:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.picker__close:disabled {
+  background: transparent;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation-duration: 2.4s;
+  }
+}
+
 /* These rules are required: presentVCs() creates these elements but ships no CSS for them, so
    without this the Embed UI iframe renders as a plain block at the end of <body> instead of a
    centered overlay. */
@@ -431,7 +830,6 @@ body {
     0 16px 32px 0 rgba(0, 0, 0, 0.07),
     0 12px 24px 0 rgba(0, 0, 0, 0.07);
 }
-
 
 /* Small screens: the sidebar collapses to a logo bar and the cards stack. */
 
@@ -479,6 +877,34 @@ body {
   .cards {
     flex-direction: column;
     gap: 16px;
+  }
+
+  .picker {
+    padding: 12px;
+  }
+
+  .picker__panel {
+    min-width: 0;
+    padding: 16px;
+    gap: 24px;
+  }
+
+  .picker__options {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .picker__actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .option__tooltip {
+    white-space: normal;
+    min-width: 180px;
   }
 
   .card {

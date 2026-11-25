@@ -31,9 +31,23 @@ export interface VerifyPresentationRequest {
   origin?: string
 }
 
+export type IssuerTrustStatus = 'trusted' | 'untrusted' | 'not_evaluated'
+
+export interface IssuerTrust {
+  credentialId: string
+  index: number
+  status: IssuerTrustStatus
+  source?: { type: 'verifier' | 'trust_list'; trustListId?: string }
+  anchorSki?: string
+  role?: string
+  reason?: string
+  category?: string
+}
+
 export interface VerifyPresentationResponse {
   verifiedClaims: Record<string, unknown>
   presentations?: Record<string, unknown[]>
+  issuerTrust: IssuerTrust[]
 }
 
 export interface Paginated<T> {
@@ -41,8 +55,19 @@ export interface Paginated<T> {
   pagination: { page: number; limit: number }
 }
 
+export interface Logo {
+  uri: string
+  altText?: string
+}
+
+export interface VerifierSummary {
+  id: string
+  name: string
+  logo: Logo | null
+}
+
 export interface VpSchemaListItem {
   id: string
   name: string
-  verifiers: string[]
+  verifiers: VerifierSummary[]
 }

@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import { config } from './config.js'
 import { errorHandler } from './errors.js'
+import { attributeProviderRouter } from './routes/attributeProvider.js'
 import { offersRouter } from './routes/offers.js'
 import { APP_VERSION } from './version.js'
 
@@ -20,6 +21,7 @@ export function createApp() {
     res.json({ version: APP_VERSION })
   })
 
+  app.use(attributeProviderRouter)
   app.use(offersRouter)
 
   app.use(errorHandler)

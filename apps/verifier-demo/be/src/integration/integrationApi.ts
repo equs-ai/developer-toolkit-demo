@@ -13,6 +13,8 @@ export async function createPresentationRequest(schema: {
 }): Promise<CreatePresentationRequestResponse> {
   const body: CreatePresentationRequest = {
     vpSchemaId: schema.vpSchemaId,
+    // Presentation Flow 2. Add 'dcApi' for Flow 1 as well (DC API, Android phones only today):
+    // modes: ['mobile', 'dcApi'],
     modes: ['mobile'],
     encrypted: true,
     verifierWebUrl: config.verifierWebUrl,

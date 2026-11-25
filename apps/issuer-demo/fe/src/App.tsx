@@ -2,7 +2,7 @@ import { config } from './app/config'
 import { useSession } from './app/auth'
 import { backendApi } from './app/backendApi'
 import { useEmbeddedUi } from './integration/useEmbeddedUi'
-import { issueToAnyWallet } from './integration/issueToAnyWallet'
+import { issueKycVc } from './integration/issueKycVc'
 import { Layout } from './ui/Layout'
 import { Dashboard } from './ui/Dashboard'
 
@@ -11,16 +11,25 @@ export function App() {
 
   useEmbeddedUi()
 
-  const { user, logout } = useSession()
+  const { user, login, logout } = useSession()
+
+  const handleIssueToWallet = () => issueKycVc(user && { id: user.id, email: user.email })
+
+  const createAutoOffer = async () => {
+    return (await backendApi.createAutoOffer()).uriId
+  }
+
+  const handleCheckStatus = (offerId: string) => backendApi.getOffer(offerId).then(({ state }) => state)
 
   return (
-    <Layout userEmail={user.email} onLogout={logout}>
+    <Layout signedIn={!!user} userEmail={user?.email} onLogin={login} onLogout={logout}>
       <Dashboard
-        userName={user.name}
+        signedIn={!!user}
+        userName={user?.name}
         tenantSlug={config.tenantSlug}
-        onIssueToAnyWallet={() => issueToAnyWallet({ id: user.id, email: user.email })}
-        onAutoIssue={() => backendApi.createAutoOffer().then(({ uriId }) => uriId)}
-        onCheckStatus={(offerId) => backendApi.getOffer(offerId).then(({ state }) => state)}
+        onIssueToAnyWallet={handleIssueToWallet}
+        onAutoIssue={user ? createAutoOffer : undefined}
+        onCheckStatus={handleCheckStatus}
       />
     </Layout>
   )

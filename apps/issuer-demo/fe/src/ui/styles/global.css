@@ -697,6 +697,13 @@ body {
   opacity: 1;
 }
 
+.kyc-action--unavailable .button {
+  background: var(--background-neutral-tonal-default);
+  color: var(--text-neutral-tertiary);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
 .kyc-tip {
   display: flex;
   align-items: center;

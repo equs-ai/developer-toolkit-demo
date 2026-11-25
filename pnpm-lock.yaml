@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  proxy-addr: 2.0.8
+
 importers:
 
   .:
@@ -35,6 +38,68 @@ importers:
       typescript-eslint:
         specifier: 8.18.2
         version: 8.18.2(eslint@9.39.4)(typescript@5.6.2)
+
+  apps/ap2-demo/be:
+    dependencies:
+      cors:
+        specifier: 2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: 16.4.7
+        version: 16.4.7
+      express:
+        specifier: 5.1.0
+        version: 5.1.0
+      jose:
+        specifier: 6.2.4
+        version: 6.2.4
+      zod:
+        specifier: 3.24.1
+        version: 3.24.1
+    devDependencies:
+      '@types/cors':
+        specifier: 2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: 5.0.0
+        version: 5.0.0
+      '@types/node':
+        specifier: 22.10.2
+        version: 22.10.2
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
+
+  apps/ap2-demo/fe:
+    dependencies:
+      oidc-client-ts:
+        specifier: 3.2.0
+        version: 3.2.0
+      react:
+        specifier: 18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: 18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-oidc-context:
+        specifier: 3.2.0
+        version: 3.2.0(oidc-client-ts@3.2.0)(react@18.3.1)
+    devDependencies:
+      '@types/node':
+        specifier: 22.10.2
+        version: 22.10.2
+      '@types/react':
+        specifier: 18.3.18
+        version: 18.3.18
+      '@types/react-dom':
+        specifier: 18.3.5
+        version: 18.3.5(@types/react@18.3.18)
+      '@vitejs/plugin-react':
+        specifier: 4.3.4
+        version: 4.3.4(vite@6.4.3(@types/node@22.10.2)(tsx@4.19.2))
+      vite:
+        specifier: 6.4.3
+        version: 6.4.3(@types/node@22.10.2)(tsx@4.19.2)
 
   apps/issuer-demo/be:
     dependencies:
@@ -70,8 +135,8 @@ importers:
   apps/issuer-demo/fe:
     dependencies:
       '@equs-ai/dtk-embedded-ui':
-        specifier: 0.1.3
-        version: 0.1.3
+        specifier: 0.2.0
+        version: 0.2.0
       oidc-client-ts:
         specifier: 3.2.0
         version: 3.2.0
@@ -132,8 +197,8 @@ importers:
   apps/verifier-demo/fe:
     dependencies:
       '@equs-ai/dtk-embedded-ui':
-        specifier: 0.1.3
-        version: 0.1.3
+        specifier: 0.2.0
+        version: 0.2.0
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -242,8 +307,8 @@ packages:
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
 
-  '@equs-ai/dtk-embedded-ui@0.1.3':
-    resolution: {integrity: sha512-5endOYZuD3qVxsULzV5xeFLY+zieSaYFKEWAKMBqUlbRKHdr8KXCDnVKL1zGRKx0TzqVwE5H7EMQ3qULshlhyw==}
+  '@equs-ai/dtk-embedded-ui@0.2.0':
+    resolution: {integrity: sha512-0xeI92dqSJxGlE8KVVg4RO3TZgNzohTwfuouISV9VI/zCF1j/0ervJA0oJK48ydpjdppsPu6Yof694ZcePnseA==}
 
   '@esbuild/aix-ppc64@0.23.1':
     resolution: {integrity: sha512-6VhYk1diRqrhBAqpJEdjASR/+WVRtfjpqKuNw11cLiaWpAT/Uu+nokB+UJnevzy/P9C/ty6AOe0dwueMrGh/iQ==}
@@ -1094,7 +1159,6 @@ packages:
   eslint@9.39.4:
     resolution: {integrity: sha512-XoMjdBOwe/esVgEvLmNsD3IRHkm7fbKIUGvrleloJXUZgDHig2IPWNniv+GwjyJXzuNqVjlr5+4yVUZjycJwfQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -1471,8 +1535,8 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  proxy-addr@2.0.7:
-    resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
+  proxy-addr@2.0.8:
+    resolution: {integrity: sha512-5nnx0yGyVUcY6t9RnWcARWtwT9F1D8O9rt08htPvnd49W1IgZtmLkhu9WfMzQj1cFxjHIO6connUNVW5k7AVyQ==}
     engines: {node: '>= 0.10'}
 
   punycode@2.3.1:
@@ -1842,7 +1906,7 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
-  '@equs-ai/dtk-embedded-ui@0.1.3': {}
+  '@equs-ai/dtk-embedded-ui@0.2.0': {}
 
   '@esbuild/aix-ppc64@0.23.1':
     optional: true
@@ -2644,7 +2708,7 @@ snapshots:
       on-finished: 2.4.1
       once: 1.4.0
       parseurl: 1.3.3
-      proxy-addr: 2.0.7
+      proxy-addr: 2.0.8
       qs: 6.16.0
       range-parser: 1.3.0
       router: 2.2.0
@@ -2946,7 +3010,7 @@ snapshots:
 
   prettier@3.4.2: {}
 
-  proxy-addr@2.0.7:
+  proxy-addr@2.0.8:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1

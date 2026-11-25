@@ -7,13 +7,30 @@ export interface ClaimDefs {
   mandatory?: boolean
 }
 
+export interface Logo {
+  uri: string
+  altText?: string
+}
+
+export interface IssuerSummary {
+  id: string
+  name: string
+  logo: Logo | null
+}
+
+export interface VcSchemaSummary {
+  id: string
+  name: string
+  versionId: string
+}
+
 export interface VcSchemaListItem {
   id: string
   vcSchemaVersionId: string
   version: number
   name: string
   description: string | null
-  issuers: string[]
+  issuers: IssuerSummary[]
   claimDefs: ClaimDefs[]
   format: string
 }
@@ -32,7 +49,9 @@ export interface AutoIssuance {
   notificationModes?: NotificationMode[]
 }
 
-export interface CreateOfferRequest {
+export type OfferFlow = 'pre_authorized_code' | 'authorization_code'
+
+export interface CreatePreAuthOfferRequest {
   vcSchemaVersionId: string
   claims: Claims
   issuerId: string
@@ -40,12 +59,22 @@ export interface CreateOfferRequest {
   autoIssuance?: AutoIssuance
 }
 
+export interface CreateAuthCodeOfferRequest {
+  vcSchemaVersionId: string
+  issuerId: string
+  flow: 'authorization_code'
+}
+
+export type CreateOfferRequest = CreatePreAuthOfferRequest | CreateAuthCodeOfferRequest
+
 export interface CreateOfferResponse {
   params: Record<string, unknown>
   byValue: string
   byReference: string
-  txCode: string
+  // Absent for an authorization code offer
+  txCode?: string
   uriId: string
+  flow: OfferFlow
 }
 
 export interface PullDelivery {
@@ -75,14 +104,16 @@ export type IssuanceState = 'pending' | 'issued' | 'accepted' | 'declined' | 'ne
 export interface IssuedOffer {
   uriId: string
   userId: string | null
-  state: IssuanceState
+  flow: OfferFlow
+  status: IssuanceState
   credLifetime: number | null
   assurance: string
   offerDate: string
   updatedDate: string
   credDefId: string
   credentialIssuer: string
-  issuerId: string
+  issuer: IssuerSummary
+  vcSchema: VcSchemaSummary
   statusList: { uri: string; idx: number } | null
   byReference: string
 }

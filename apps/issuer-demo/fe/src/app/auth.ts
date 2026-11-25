@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { WebStorageStateStore } from 'oidc-client-ts'
+import { UserManager, WebStorageStateStore } from 'oidc-client-ts'
 import { useAuth, type AuthProviderProps } from 'react-oidc-context'
 import { config } from './config'
 
@@ -13,13 +13,38 @@ const clearKeycloakParams = () => {
   window.history.replaceState({}, document.title, window.location.pathname.concat(query))
 }
 
-export const oidcConfig: AuthProviderProps = {
+const userManager = new UserManager({
   authority: config.kcAuthority,
   client_id: config.kcClientId,
   redirect_uri: `${window.location.origin}/`,
   scope: 'openid profile email',
   userStore: new WebStorageStateStore({ store: localStorage }),
+})
+
+export const oidcConfig: AuthProviderProps = {
+  userManager,
   onSigninCallback: clearKeycloakParams,
+}
+
+let renewal: Promise<unknown> | undefined
+
+const renewOrForgetUser = () =>
+  (renewal ??= userManager
+    .signinSilent()
+    .catch(() => userManager.removeUser())
+    .finally(() => {
+      renewal = undefined
+    }))
+
+export const useExpiredUserRenewal = () => {
+  const auth = useAuth()
+  const expired = !auth.isLoading && !auth.activeNavigator && !!auth.user?.expired
+
+  useEffect(() => {
+    if (expired) void renewOrForgetUser()
+  }, [expired])
+
+  return expired
 }
 
 const isUnrecoverable = (auth: ReturnType<typeof useAuth>) => {
@@ -56,31 +81,37 @@ export const useAccessTokenSync = () => {
   }, [auth.user])
 }
 
+export interface SessionUser {
+  id: string
+  email?: string
+  name: string
+}
+
 export interface Session {
-  user: { id: string; email?: string; name: string }
+  user?: SessionUser
+  login: () => void
   logout: () => void
 }
 
 /**
- * The signed-in user, for anything rendered inside `<AuthHandler>`.
+ * The session, for anything rendered inside `<AuthHandler>`. `user` is undefined when signed out.
  *
- * `id` is the token's `sub`, which `issueVC()` requires as `userInfo.id`. `email` is optional
+ * `id` is the token's `sub`, which `issueVC()` takes as `userInfo.id`. `email` is optional
  * because the claim depends on what the tenant's Keycloak releases.
  */
 export const useSession = (): Session => {
   const auth = useAuth()
   const profile = auth.user?.profile
 
-  if (!profile?.sub) {
-    throw new Error('useSession requires a signed-in user. Render it inside <AuthHandler>.')
-  }
-
   return {
-    user: {
-      id: profile.sub,
-      email: profile.email,
-      name: profile.name ?? profile.preferred_username ?? profile.email ?? 'user',
-    },
+    user: profile?.sub
+      ? {
+          id: profile.sub,
+          email: profile.email,
+          name: profile.name ?? profile.preferred_username ?? profile.email ?? 'user',
+        }
+      : undefined,
+    login: () => void auth.signinRedirect(),
     logout: () => {
       const idToken = auth.user?.id_token
 

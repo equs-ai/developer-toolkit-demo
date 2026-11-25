@@ -6,11 +6,13 @@ import backlightBody from './assets/icons/backlight-body.svg'
 
 type LayoutProps = {
   children: ReactNode
+  signedIn: boolean
   userEmail?: string
+  onLogin: () => void
   onLogout: () => void
 }
 
-export function Layout({ children, userEmail, onLogout }: LayoutProps) {
+export function Layout({ children, signedIn, userEmail, onLogin, onLogout }: LayoutProps) {
   return (
     <div className="app">
       <div className="backlight backlight--bottom-left" aria-hidden="true">
@@ -23,7 +25,7 @@ export function Layout({ children, userEmail, onLogout }: LayoutProps) {
       <Sidebar />
 
       <div className="main">
-        <TopBar userEmail={userEmail} onLogout={onLogout} />
+        <TopBar signedIn={signedIn} userEmail={userEmail} onLogin={onLogin} onLogout={onLogout} />
         <div className="body-panel">
           <div className="backlight backlight--body" aria-hidden="true">
             <img src={backlightBody} alt="" />

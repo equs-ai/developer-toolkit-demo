@@ -1,5 +1,5 @@
 import { config } from './config'
-import type { CreateRequestResponse, VerifyRequest, VerifyResponse } from './types'
+import type { CreateRequestResponse, Flow, VerifyRequest, VerifyResponse } from './types'
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers: Record<string, string> = { Accept: 'application/json' }
@@ -28,7 +28,7 @@ async function describeFailure(response: Response): Promise<string> {
 }
 
 export const backendApi = {
-  createRequest: () => request<CreateRequestResponse>('/requests', { method: 'POST' }),
+  createRequest: (flow: Flow) => request<CreateRequestResponse>('/requests', { method: 'POST', body: JSON.stringify({ flow }) }),
 
   verify: (body: VerifyRequest) => request<VerifyResponse>('/verify', { method: 'POST', body: JSON.stringify(body) }),
 }

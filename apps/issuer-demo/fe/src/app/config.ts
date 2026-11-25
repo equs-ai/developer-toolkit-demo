@@ -3,5 +3,6 @@ export const config = {
   tenantSlug: import.meta.env.VITE_TENANT_SLUG,
   kcAuthority: import.meta.env.VITE_KC_AUTHORITY,
   kcClientId: import.meta.env.VITE_KC_CLIENT_ID,
+  region: import.meta.env.VITE_EMBED_UI_REGION,
   embedUiSsiOrigin: import.meta.env.VITE_EMBED_UI_SSI_ORIGIN,
 } as const

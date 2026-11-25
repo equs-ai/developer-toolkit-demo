@@ -1,7 +1,7 @@
 {
   "name": "dtk-demo",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Reference demos showing how to integrate the Developer Toolkit (DTK) as an issuer and as a verifier",
   "license": "Apache-2.0",
   "type": "module",
@@ -19,7 +19,9 @@
     "issuer:fe": "pnpm --filter @dtk-demo/issuer-fe dev",
     "issuer:be": "pnpm --filter @dtk-demo/issuer-be dev",
     "verifier:fe": "pnpm --filter @dtk-demo/verifier-fe dev",
-    "verifier:be": "pnpm --filter @dtk-demo/verifier-be dev"
+    "verifier:be": "pnpm --filter @dtk-demo/verifier-be dev",
+    "ap2:fe": "pnpm --filter @dtk-demo/ap2-fe dev",
+    "ap2:be": "pnpm --filter @dtk-demo/ap2-be dev"
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",

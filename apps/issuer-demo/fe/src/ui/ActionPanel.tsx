@@ -4,28 +4,31 @@ import infoIcon from './assets/icons/info.svg'
 
 const ISSUE_TO_ANY_WALLET = {
   label: 'Issue KYC VC to any Wallet',
-  clarification: 'Explicit issuance to any Wallet (supported 3rd party Wallet or EQUS Mobile Wallet) by scanning QR code.',
+  signedIn: 'Explicit issuance to any Wallet (supported 3rd party Wallet or EQUS Mobile Wallet) by scanning QR code.',
+  signedOut:
+    'Explicit issuance to a mobile Wallet by scanning QR code. No transaction code: you sign in with the bank inside the Wallet, and the bank provides your claims at issuance time.',
 }
 
 const AUTO_ISSUE = {
   label: 'Auto-issue KYC VC to EQUS Wallet',
-  clarification:
+  signedIn:
     "Implicit issuance to EQUS Mobile Wallet only (offer and notifications will be sent to the Wallet). Can be triggered either as a user action like in this demo, or as a result of Tenant's internal business logic without user interaction.",
+  signedOut: 'Log in to auto-issue: the offer is pushed to your EQUS Mobile Wallet account.',
 }
 
 type ActionProps = {
   label: string
   clarification: string
-  onClick: () => void
-  disabled: boolean
+  onClick?: () => void
+  busy: boolean
 }
 
-function Action({ label, clarification, onClick, disabled }: ActionProps) {
+function Action({ label, clarification, onClick, busy }: ActionProps) {
   const tooltipId = useId()
 
   return (
-    <div className="kyc-action">
-      <button className="button button--brand" type="button" onClick={onClick} disabled={disabled} aria-busy={disabled}>
+    <div className={onClick ? 'kyc-action' : 'kyc-action kyc-action--unavailable'}>
+      <button className="button button--brand" type="button" onClick={onClick} disabled={busy || !onClick} aria-busy={busy}>
         {label}
       </button>
       <span className="kyc-action__info">
@@ -79,12 +82,13 @@ const describe = (flow: Flow): FlowStatus | undefined => {
 
 type ActionPanelProps = {
   onIssueToAnyWallet: () => Promise<string>
-  onAutoIssue: () => Promise<string>
+  onAutoIssue?: () => Promise<string>
   onCheckStatus: (offerId: string) => Promise<IssuanceState>
+  signedIn: boolean
   tenantSlug?: string
 }
 
-export function ActionPanel({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, tenantSlug }: ActionPanelProps) {
+export function ActionPanel({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, signedIn, tenantSlug }: ActionPanelProps) {
   const [flow, setFlow] = useState<Flow>({ status: 'idle' })
 
   // Calls the handler in the same tick as the click: it may open a popup, and a browser only
@@ -93,10 +97,10 @@ export function ActionPanel({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, te
     setFlow({ status: 'starting' })
 
     createOffer().then(
-      (offerId) => setFlow({ status: 'active', offerId, checking: false }),
+      (offerId) => setFlow(signedIn ? { status: 'active', offerId, checking: false } : { status: 'idle' }),
       (error: unknown) => setFlow({ status: 'failed', text: message(error) })
     )
-  }, [])
+  }, [signedIn])
 
   const handleCheckStatus = useCallback(() => {
     if (flow.status !== 'active') return
@@ -126,11 +130,21 @@ export function ActionPanel({ onIssueToAnyWallet, onAutoIssue, onCheckStatus, te
     <section className="panel kyc-panel">
       <h2 className="panel__title">Re-usable KYC</h2>
       <div className="kyc-panel__actions">
-        <Action {...ISSUE_TO_ANY_WALLET} onClick={() => begin(onIssueToAnyWallet)} disabled={busy} />
-        <Action {...AUTO_ISSUE} onClick={() => begin(onAutoIssue)} disabled={busy} />
+        <Action
+          label={ISSUE_TO_ANY_WALLET.label}
+          clarification={signedIn ? ISSUE_TO_ANY_WALLET.signedIn : ISSUE_TO_ANY_WALLET.signedOut}
+          onClick={() => begin(onIssueToAnyWallet)}
+          busy={busy}
+        />
+        <Action
+          label={AUTO_ISSUE.label}
+          clarification={signedIn ? AUTO_ISSUE.signedIn : AUTO_ISSUE.signedOut}
+          onClick={onAutoIssue && (() => begin(onAutoIssue))}
+          busy={busy}
+        />
       </div>
 
-      {tenantSlug && (
+      {signedIn && tenantSlug && (
         <div className="kyc-tip">
           <img className="icon" src={infoIcon} alt="" width={24} height={24} />
           <p className="kyc-tip__text">

@@ -69,8 +69,9 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.secretEnv .Values.env }}
           env:
+            - name: APP_VERSION
+              value: {{ .Values.image.tag | default .Chart.AppVersion | quote }}
           {{- range $name, $ref := .Values.secretEnv }}
             - name: {{ $name }}
               valueFrom:
@@ -84,7 +85,6 @@ spec:
               value: {{ $value | quote }}
           {{- end }}
           {{- end}}
-          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

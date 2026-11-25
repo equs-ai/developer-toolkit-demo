@@ -6,6 +6,7 @@ export function useEmbeddedUi() {
   useEffect(() => {
     initEmbeddedUi({
       tenant: config.tenantSlug,
+      region: config.region,
       embedUiSsiOrigin: config.embedUiSsiOrigin,
     })
 
